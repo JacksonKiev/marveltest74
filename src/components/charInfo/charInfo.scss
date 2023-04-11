@@ -46,7 +46,7 @@
         &-list {
             position: relative;
             margin-top: 10px;
-        }
+                 }
         &-item {
             width: 100%;
             padding: 0px 10px;
@@ -54,6 +54,49 @@
             box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
             margin-top: 10px;
         }
+        &-form {
+            width: 100%;
+            padding: 25px;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.25);
+            margin-top: 30px;
+            h2{
+                margin-bottom: 20px;
+                font-family: 'Roboto Condensed';
+                font-weight: 700;
+                font-size: 18px;
+            }
+
+          
+        }
+        &-input {
+            width: 200px;
+            height: 40px;
+            border: none;
+            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+            padding: 0 10px;
+
+            &::placeholder{
+                font-style: normal;
+                font-weight: 400;
+                font-size: 14px;}
+                margin-right: 20px;
+        }
+
+        &-error {
+            color: rgba(159, 0, 19, 1);
+            // font-family: Roboto, Condensed;
+            font-weight: 700;
+            font-size:18px;       
+            margin-top: 25px;
+        }
+        &-submit{
+            color:#03710E;
+            font-weight: 700;
+            font-size:18px;       
+            margin-top: 25px;
+        }
+
+
     }
     &__select {
         font-weight: bold;

@@ -7,6 +7,7 @@
         grid-template-columns: 650px 425px;
         column-gap: 25px;
         align-items: start;
+
     }
 
     &__grid {
@@ -56,4 +57,31 @@
         text-transform: uppercase;
         color: #fff;
     }
+}
+
+
+
+.modal-enter {
+    transform: scale(0);
+}
+
+.modal-enter-active {
+    transform: scale(1);
+    transition: all 500ms ease-in;
+}
+
+.modal-enter-done {
+    transform: scale(1);
+    // transition: all 1000ms;
+}
+
+
+
+.App {
+    text-align: center;
+}
+
+.App-logo {
+    height: 40vmin;
+    pointer-events: none;
 }

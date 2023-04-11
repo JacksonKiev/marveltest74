@@ -1,5 +1,5 @@
 import { Component } from "react/cjs/react.production.min";
-import ErrorMessage from '../errorMessage/ErrorMessage';
+import ErrorMessageMarvel from '../errorMessageMarvel/ErrorMessageMarvel';
 
 class ErrorBoundary extends Component {
     state= {
@@ -14,7 +14,7 @@ class ErrorBoundary extends Component {
 
     render(){
         if (this.state.error){
-            return <ErrorMessage/>;
+            return <ErrorMessageMarvel/>;
         }
 return this.props.children;
     }

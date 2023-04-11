@@ -1,74 +1,50 @@
-import { Component } from 'react/cjs/react.production.min';
+import {useEffect,useState } from 'react';
+import { Formik, Form, Field, ErrorMessage, useField } from 'formik';
+import * as Yup from "yup" 
 import PropTypes from 'prop-types'
 import Spinner from '../spinner/Spinner';
-import ErrorMessage from '../errorMessage/ErrorMessage';
+import ErrorMessageMarvel from '../errorMessageMarvel/ErrorMessageMarvel';
 import Skeleton from '../skeleton/Skeleton'
 import './charInfo.scss';
-import MarvelService from '../../services/MarvelService';
+import useMarvelService from '../../services/MarvelService';
+//  import CharForm from '../charForm/СharForm';
+import CharForm from '../charForm/CharForm';
+
+const CharInfo =(props)=> {
+        const [char,setChar]=useState(null);
 
 
-class CharInfo extends Component {
-    state={
-        char:null,
-        loading:false,
-        error:false
-        }
+   const{loading,error,getCharacter,getCharacterByName,clearError} = useMarvelService();
 
-    marvelService=new MarvelService();
+useEffect(
+    ()=>{updateChar();
+    },[props.charId]
+)
+    
 
-componentDidMount(){
-    this.updateChar();
-}
-
-componentDidUpdate(prevProps){
-    if(this.props.charId !== prevProps.charId)
-    {
-         this.updateChar();
-    }
-   
-}
-
-updateChar=()=>{
-    const{charId}=this.props;
+const updateChar=()=>{
+    const{charId}=props;
     if (!charId) {
           return;
     }
-    this.onCharLoading();
-
-    this.marvelService
-    .getCharacter(charId)
-    .then(this.onCharLoaded)   
-    .catch(this.onError );
+    clearError();
+    getCharacter(charId)
+    .then(onCharLoaded)      
 }
 
-onCharLoaded=(char)=> {
-    this.setState({
-         char,
-         loading:false
-     })
- }
+const onCharLoaded=(char)=> {
+     setChar(char);
+ }   
 
-  onCharLoading=()=> {
-         this.setState({
-         loading:true
-      })
- }
+    
 
-  onError=()=>{
-         this.setState({
-             error:true,
-             loading:false
-         })
-
- }
-
-    render() {
-         const {char,loading,error}=this.state;
+        //  const {char,loading,error}=this.state;
 
          const skeleton=char || loading || error ? null: <Skeleton/>
-         const errorMessage = error?<ErrorMessage/>:null;
+         const errorMessage = error?<ErrorMessageMarvel/>:null;
          const spinner=loading?<Spinner/>:null;
          const content=!(loading || error ||!char) ? <View char={char}/>:null;
+
 
         return (
             <div className="char__info">
@@ -76,10 +52,11 @@ onCharLoaded=(char)=> {
                 {errorMessage}
                 {spinner}
                 {content}
+                <CharForm/>
 
-            </div>
+             </div>
         )
-    }
+    
 }
 
 
@@ -107,7 +84,7 @@ const View=({char})=>{
                             </a>
                         </div>
                     </div>
-                </div>
+                 </div>
                 <div className="char__descr">
                     {description}
 
@@ -128,6 +105,13 @@ const View=({char})=>{
                     }
 
                 </ul>
+                {/* <form action="#" className='char__comics-form'>
+                    <h2> Or find a character by name: </h2>
+                    <input type="text" className='char__comics-input' placeholder='Enter name' />
+                    <a href='#' className="button button__main">
+                        <div className="inner">Find</div>
+                    </a>
+                </form> */}
     </>
     )
      
