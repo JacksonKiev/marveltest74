@@ -100,12 +100,31 @@ import { Link } from 'react-router-dom';
 //         const items=renderItems(charList);
 //         const errorMessage = error?<ErrorMessage/>:null;
 //         const spinner=loading && !newItemLoading ?<Spinner/>:null;
+const setContent=(process,Component,newItemLoading)=>{
+    switch (process) {
+        case 'waiting':
+            return  <Spinner/>;
+            break;
+        case 'loading':
+            return  newItemLoading ?   <Component/> : <Spinner/> ;
+            break;
+        case 'confirmed' :
 
+            return   <Component/> ;        
+            break;
+        case  'error' :
+            return <ErrorMessageMarvel/>;
+            break;
+        default :
+        throw new Error('unexpected process state')
+
+    }
+}
 const ComicsList = (props) => {
 
     const [comicsList,setComicsList]=useState([]);
     const [offset,setOffset]=useState(0);
-    const {loading,error,getAllComics}=useMarvelService();
+    const {loading,error,getAllComics,process,setProcess}=useMarvelService();
     const [comicEnded,setComicEnded]=useState(false);
     const [newItemLoading,setNewItemLoading]=useState(false);
 
@@ -118,7 +137,8 @@ const ComicsList = (props) => {
 const onRequest=(offset,initial)=>{
          initial ?  setNewItemLoading(false) : setNewItemLoading(true);  
          getAllComics(offset)
-        .then(onComicsListLoaded) 
+        .then(onComicsListLoaded)
+        .then(()=>setProcess('confirmed'));
     }
 
 
@@ -167,10 +187,10 @@ const onRequest=(offset,initial)=>{
     return (
         <div className="comics__list">
 
-            {errorMessage}
+            {/* {errorMessage}
             {spinner}
-             {items}
-
+             {items} */}
+             {setContent(process,()=>renderItems(comicsList),newItemLoading)}
             <button 
                      onClick={()=>onRequest(offset,false)} 
                     disabled={newItemLoading}

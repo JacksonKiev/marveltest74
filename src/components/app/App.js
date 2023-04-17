@@ -34,11 +34,10 @@ const App = ()=>{
                     <AppHeader/>
                     <main>
                     <Suspense fallback={<Spinner/>}>
-                        <Switch>                                                      
+                        <Switch>                                                    
                              <Route  exact  path="/">
                                 <MainPage/>
                             </Route>
-
                             <Route  exact path="/comics">
                                 <ComicsPage/>
                             </Route>

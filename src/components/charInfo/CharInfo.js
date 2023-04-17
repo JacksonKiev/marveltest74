@@ -4,17 +4,17 @@ import * as Yup from "yup"
 import PropTypes from 'prop-types'
 import Spinner from '../spinner/Spinner';
 import ErrorMessageMarvel from '../errorMessageMarvel/ErrorMessageMarvel';
-import Skeleton from '../skeleton/Skeleton'
+import Skeleton from '../skeleton/Skeleton';
+import CharForm from "../charForm/CharForm";
 import './charInfo.scss';
 import useMarvelService from '../../services/MarvelService';
-//  import CharForm from '../charForm/СharForm';
-import CharForm from '../charForm/CharForm';
+import setContent from '../../utils/setContent';
 
 const CharInfo =(props)=> {
         const [char,setChar]=useState(null);
 
 
-   const{loading,error,getCharacter,getCharacterByName,clearError} = useMarvelService();
+   const{loading,error,getCharacter,clearError,process,setProcess} = useMarvelService();
 
 useEffect(
     ()=>{updateChar();
@@ -29,30 +29,51 @@ const updateChar=()=>{
     }
     clearError();
     getCharacter(charId)
-    .then(onCharLoaded)      
+    .then(onCharLoaded)
+    .then(()=>setProcess('confirmed'))  
 }
 
 const onCharLoaded=(char)=> {
      setChar(char);
  }   
 
-    
+        // const setContent=(process,char)=>{
+        //     switch (process) {
+        //         case 'waiting':
+        //             return <><Skeleton/> <CharForm/></> ;
+        //             break;
+        //         case 'loading':
+        //             return  <Spinner/>;
+        //             break;
+        //         case 'confirmed' :
+        //             return <View char={char}/>;
+        //             break;
+        //         case  'error' :
+        //             return <ErrorMessageMarvel/>;
+        //             break;
+        //         default :
+        //         throw new Error('unexpected process state')
+
+        //     }
+        // }
 
         //  const {char,loading,error}=this.state;
 
-         const skeleton=char || loading || error ? null: <Skeleton/>
+/*          const skeleton=char || loading || error ? null: <Skeleton/>
          const errorMessage = error?<ErrorMessageMarvel/>:null;
          const spinner=loading?<Spinner/>:null;
-         const content=!(loading || error ||!char) ? <View char={char}/>:null;
+         const content=!(loading || error ||!char) ? <View char={char}/>:null; */
 
 
         return (
             <div className="char__info">
-                {skeleton}
+                {/* {skeleton}
                 {errorMessage}
                 {spinner}
                 {content}
-                <CharForm/>
+                <CharForm/> */} 
+            {setContent(process,View,char)}
+            <CharForm/>
 
              </div>
         )
@@ -60,9 +81,9 @@ const onCharLoaded=(char)=> {
 }
 
 
-const View=({char})=>{
+const View=({data})=>{
     
-    const { name,description,thumbnail,homepage,wiki,comics} = char;
+    const { name,description,thumbnail,homepage,wiki,comics} = data;
     let imgStyle={"objectFit":"cover"};
     if(thumbnail==='http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg') imgStyle={"objectFit":"contain"};
    
@@ -105,6 +126,7 @@ const View=({char})=>{
                     }
 
                 </ul>
+                {/* <CharForm/> */}
                 {/* <form action="#" className='char__comics-form'>
                     <h2> Or find a character by name: </h2>
                     <input type="text" className='char__comics-input' placeholder='Enter name' />
